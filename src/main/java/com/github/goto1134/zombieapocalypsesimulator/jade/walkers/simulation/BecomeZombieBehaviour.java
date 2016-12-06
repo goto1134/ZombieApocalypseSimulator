@@ -1,6 +1,7 @@
 package com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation;
 
 import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.DataStoreUtils;
+import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.WalkerType;
 import jade.core.Agent;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;

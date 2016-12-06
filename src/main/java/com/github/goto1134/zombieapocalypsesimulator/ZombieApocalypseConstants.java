@@ -1,6 +1,6 @@
 package com.github.goto1134.zombieapocalypsesimulator;
 
-import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation.WalkerType;
+import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.WalkerType;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 

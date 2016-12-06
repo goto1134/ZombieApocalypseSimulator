@@ -4,7 +4,6 @@ import com.github.goto1134.zombieapocalypsesimulator.ZombieApocalypseConstants;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.Coordinates;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.GenerateCoordinates;
 import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation.SimulationStates;
-import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation.WalkerType;
 import jade.core.behaviours.DataStore;
 import jade.lang.acl.ACLMessage;
 

@@ -4,7 +4,6 @@ import com.github.goto1134.zombieapocalypsesimulator.ZombieApocalypseConstants;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.ApocalypseOntology;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.GenerateCoordinates;
 import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation.SimulationBehaviour;
-import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation.WalkerType;
 import jade.content.ContentElement;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;

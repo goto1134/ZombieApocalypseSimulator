@@ -5,6 +5,7 @@ import com.github.goto1134.zombieapocalypsesimulator.jade.DFUtils;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.Coordinates;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.GetCoordinatesInRadius;
 import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.DataStoreUtils;
+import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.WalkerType;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.core.AID;

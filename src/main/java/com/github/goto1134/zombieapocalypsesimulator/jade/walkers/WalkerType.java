@@ -1,4 +1,4 @@
-package com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation;
+package com.github.goto1134.zombieapocalypsesimulator.jade.walkers;
 
 /**
  * Created by Andrew
