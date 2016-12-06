@@ -1,9 +1,9 @@
 package com.github.goto1134.zombieapocalypsesimulator;
 
 import com.github.goto1134.zombieapocalypsesimulator.jade.controller.ApocalypseController;
-import com.github.goto1134.zombieapocalypsesimulator.view.ZombieApocalypseWindow;
-import com.github.goto1134.zombieapocalypsesimulator.view.SimulationProperties;
 import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.Walker;
+import com.github.goto1134.zombieapocalypsesimulator.view.SimulationProperties;
+import com.github.goto1134.zombieapocalypsesimulator.view.ZombieApocalypseWindow;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
@@ -25,13 +25,16 @@ import java.util.stream.Stream;
  */
 public class ZombieApocalypseController {
     private static final Logger cat = LoggerFactory.getLogger(ZombieApocalypseController.class);
+
+    public static void main(String[] strings) {
+        new ZombieApocalypseController();
+    }
+
     private final Runtime instance = Runtime.instance();
     private final ZombieApocalypseWindow window = new ZombieApocalypseWindow();
     private final AgentContainer agentContainer;
+    private Set<AgentController> controllers = new HashSet<>();
 
-    public static void main(String[] strings) {
-        ZombieApocalypseController zombieApocalypseController = new ZombieApocalypseController();
-    }
 
     private ZombieApocalypseController() {
         Profile profile = new ProfileImpl();
@@ -41,7 +44,6 @@ public class ZombieApocalypseController {
         window.setStopListener(this::stopSimulation);
         window.setVisible(true);
     }
-
 
     private void startSimulation() {
         stopSimulation();
@@ -64,6 +66,10 @@ public class ZombieApocalypseController {
 
     }
 
+    private void stopSimulation() {
+        controllers.forEach(this::killAllAgents);
+    }
+
     private void startAgent(AgentController agentController) {
         try {
             agentController.start();
@@ -81,10 +87,6 @@ public class ZombieApocalypseController {
         return null;
     }
 
-    private void stopSimulation() {
-        controllers.forEach(this::killAllAgents);
-    }
-
     private void killAllAgents(AgentController agentController) {
         try {
             agentController.kill();
@@ -92,6 +94,4 @@ public class ZombieApocalypseController {
             cat.error("", e);
         }
     }
-
-    private Set<AgentController> controllers = new HashSet<>();
 }
