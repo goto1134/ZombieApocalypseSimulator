@@ -8,16 +8,16 @@ import org.slf4j.LoggerFactory;
  * Created by Andrew
  * on 28.11.2016.
  */
-public class MapOntology extends BeanOntology {
-    private static final Logger cat = LoggerFactory.getLogger(MapOntology.class);
-    public static final String NAME = MapOntology.class.getName();
-    private static Ontology theInstance = new MapOntology();
+public class ApocalypseOntology extends BeanOntology {
+    private static final Logger cat = LoggerFactory.getLogger(ApocalypseOntology.class);
+    public static final String NAME = ApocalypseOntology.class.getName();
+    private static Ontology theInstance = new ApocalypseOntology();
 
     public static Ontology getInstance() {
         return theInstance;
     }
 
-    private MapOntology() {
+    private ApocalypseOntology() {
         super(NAME, BasicOntology.getInstance());
         try {
             add("com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data");

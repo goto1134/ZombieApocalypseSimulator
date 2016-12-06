@@ -1,6 +1,6 @@
 package com.github.goto1134.zombieapocalypsesimulator.jade.controller;
 
-import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.MapOntology;
+import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.ApocalypseOntology;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.WalkerAction;
 import jade.content.ContentManager;
 import jade.content.lang.Codec;
@@ -31,7 +31,7 @@ class PerformWalkerAction extends AchieveREInitiator {
     private static final ACLMessage aclMessage = new ACLMessage(ACLMessage.REQUEST);
 
     static {
-        aclMessage.setOntology(MapOntology.NAME);
+        aclMessage.setOntology(ApocalypseOntology.NAME);
     }
 
     private final WalkerAction action;
@@ -69,7 +69,7 @@ class PerformWalkerAction extends AchieveREInitiator {
 
     private ACLMessage getRequestMessage(AID s) {
         ACLMessage outgoingRequest = new ACLMessage(ACLMessage.REQUEST);
-        outgoingRequest.setOntology(MapOntology.NAME);
+        outgoingRequest.setOntology(ApocalypseOntology.NAME);
         ContentManager contentManager = getAgent().getContentManager();
 
         outgoingRequest.setLanguage(contentManager.getLanguageNames()[0]);

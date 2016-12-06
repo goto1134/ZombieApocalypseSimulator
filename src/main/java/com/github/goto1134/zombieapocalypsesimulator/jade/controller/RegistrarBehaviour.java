@@ -1,6 +1,6 @@
 package com.github.goto1134.zombieapocalypsesimulator.jade.controller;
 
-import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.MapOntology;
+import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.ApocalypseOntology;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.Coordinates;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.GenerateCoordinates;
 import com.github.goto1134.zombieapocalypsesimulator.view.SimulationProperties;
@@ -32,7 +32,7 @@ class RegistrarBehaviour extends AchieveREResponder {
     private static final MessageTemplate TEMPLATE =
             and(
                     and(
-                            MatchOntology(MapOntology.getInstance().getName()),
+                            MatchOntology(ApocalypseOntology.getInstance().getName()),
                             MatchPerformative(ACLMessage.QUERY_REF)),
                     MatchProtocol(FIPA_QUERY));
     private final SimulationProperties simulationProperties;

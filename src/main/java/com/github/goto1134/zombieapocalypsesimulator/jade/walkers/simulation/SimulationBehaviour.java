@@ -19,8 +19,8 @@ public class SimulationBehaviour extends FSMBehaviour {
 
     private static final Logger cat = LoggerFactory.getLogger(SimulationBehaviour.class);
 
-    public SimulationBehaviour() {
-        super();
+    public SimulationBehaviour(Agent a) {
+        super(a);
         DataStore dataStore = getDataStore();
 
         //Обработка входящих сообщений
@@ -46,18 +46,18 @@ public class SimulationBehaviour extends FSMBehaviour {
 
         registerTransition(LISTEN, SimulationStates.BECOME_ZOMBIE);
         registerTransition(LISTEN, SimulationStates.RESPOND);
-        registerTransition(LISTEN, GET_ALL_IN_RADIUS);
+//        registerTransition(LISTEN, GET_ALL_IN_RADIUS);
 //        registerTransition(LISTEN, SimulationStates.PREPARE_COORDINATES);
-        registerTransition(GET_ALL_IN_RADIUS, WALK);
-        registerTransition(GET_ALL_IN_RADIUS, FIGHT);
-        registerTransition(GET_ALL_IN_RADIUS, DIE);
+//        registerTransition(GET_ALL_IN_RADIUS, WALK);
+//        registerTransition(GET_ALL_IN_RADIUS, FIGHT);
+//        registerTransition(GET_ALL_IN_RADIUS, DIE);
         registerDefaultTransition(SimulationStates.BECOME_ZOMBIE, SimulationStates.RESPOND);
         registerDefaultTransition(SimulationStates.WALK, SimulationStates.RESPOND);
-        registerDefaultTransition(SimulationStates.FIGHT, SimulationStates.RESPOND);
-        registerTransition(SimulationStates.DIE, SimulationStates.RESPOND);
-        registerTransition(SimulationStates.DIE, SimulationStates.BECOME_ZOMBIE);
+//        registerDefaultTransition(SimulationStates.FIGHT, SimulationStates.RESPOND);
+//        registerTransition(SimulationStates.DIE, SimulationStates.RESPOND);
+//        registerTransition(SimulationStates.DIE, SimulationStates.BECOME_ZOMBIE);
 //        registerDefaultTransition(SimulationStates.PREPARE_COORDINATES, SimulationStates.RESPOND);
-        registerTransition(SimulationStates.RESPOND, LISTEN, SimulationStates.values());
+        registerTransition(SimulationStates.RESPOND, LISTEN, LISTEN/* SimulationStates.values()*/);
     }
 
     private void registerState(Behaviour b, SimulationStates state) {
@@ -72,15 +72,11 @@ public class SimulationBehaviour extends FSMBehaviour {
         registerDefaultTransition(s1.toString(), s2.toString());
     }
 
-    private void registerTransition(SimulationStates s1, SimulationStates s2, SimulationStates[] toBeReset) {
+    private void registerTransition(SimulationStates s1, SimulationStates s2, SimulationStates... toBeReset) {
         String[] convertedToBeReset = Arrays.stream(toBeReset)
                 .map(SimulationStates::toString)
                 .toArray(String[]::new);
         registerTransition(s1.toString(), s2.toString(), s2.ordinal(), convertedToBeReset);
-    }
-
-    public SimulationBehaviour(Agent a) {
-        super(a);
     }
 
     @Override

@@ -7,10 +7,10 @@ package com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation;
 enum SimulationStates {
     LISTEN,
     RESPOND,
-    GET_ALL_IN_RADIUS,
+//    GET_ALL_IN_RADIUS,
 //    PREPARE_COORDINATES,
     BECOME_ZOMBIE,
     WALK,
-    FIGHT,
-    DIE,
+//    FIGHT,
+//    DIE,
 }

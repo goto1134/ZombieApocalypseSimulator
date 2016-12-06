@@ -1,6 +1,6 @@
 package com.github.goto1134.zombieapocalypsesimulator.jade.controller;
 
-import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.MapOntology;
+import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.ApocalypseOntology;
 import com.github.goto1134.zombieapocalypsesimulator.view.SimulationProperties;
 import jade.content.lang.leap.LEAPCodec;
 import jade.core.Agent;
@@ -39,7 +39,7 @@ public class ApocalypseController extends Agent {
             store.put(SIMULATION_PROPERTIES_KEY, properties);
 
             addBehaviour(new RegistrarBehaviour(this, store));
-            getContentManager().registerOntology(MapOntology.getInstance());
+            getContentManager().registerOntology(ApocalypseOntology.getInstance());
             getContentManager().registerLanguage(new LEAPCodec());
             cat.info("Loaded");
         }
@@ -58,7 +58,7 @@ public class ApocalypseController extends Agent {
         service.setName("controller");
         service.setType("controller");
         service.addLanguages(new LEAPCodec().getName());
-        service.addOntologies(MapOntology.NAME);
+        service.addOntologies(ApocalypseOntology.NAME);
         dfAgentDescription.addServices(service);
         return dfAgentDescription;
     }

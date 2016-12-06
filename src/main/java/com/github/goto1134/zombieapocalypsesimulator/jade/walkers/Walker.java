@@ -1,6 +1,6 @@
 package com.github.goto1134.zombieapocalypsesimulator.jade.walkers;
 
-import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.MapOntology;
+import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.ApocalypseOntology;
 import jade.content.lang.leap.LEAPCodec;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -10,8 +10,8 @@ import jade.domain.FIPAException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.github.goto1134.zombieapocalypsesimulator.ZombieApocalypseConstants.HUMAN;
 import static com.github.goto1134.zombieapocalypsesimulator.ZombieApocalypseConstants.WALKER;
-import static com.github.goto1134.zombieapocalypsesimulator.ZombieApocalypseConstants.ZOMBIE;
 
 /**
  * Created by Andrew
@@ -24,14 +24,15 @@ public class Walker extends Agent {
     @Override
     protected void setup() {
         cat.info("Setup");
-        getContentManager().registerOntology(MapOntology.getInstance());
+        getContentManager().registerOntology(ApocalypseOntology.getInstance());
         getContentManager().registerLanguage(new LEAPCodec());
         try {
-            ServiceDescription description = new ServiceDescription();
-            description.setType(WALKER);
-            description.setName(getName() + "walker");
+            String agentName = getName();
+            ServiceDescription walkerDescription = getServiceDescription(WALKER, agentName);
+            ServiceDescription humanDescription = getServiceDescription(HUMAN, agentName);
             DFAgentDescription agentDescription = new DFAgentDescription();
-            agentDescription.addServices(description);
+            agentDescription.addServices(walkerDescription);
+            agentDescription.addServices(humanDescription);
             agentDescription.setName(getAID());
             DFService.register(this, agentDescription);
         } catch (FIPAException e) {
@@ -40,6 +41,13 @@ public class Walker extends Agent {
 
         addBehaviour(new SearchController());
         cat.info("Laded");
+    }
+
+    public static ServiceDescription getServiceDescription(String type, String agentName) {
+        ServiceDescription serviceDescription = new ServiceDescription();
+        serviceDescription.setType(type);
+        serviceDescription.setName(agentName + type);
+        return serviceDescription;
     }
 
     @Override

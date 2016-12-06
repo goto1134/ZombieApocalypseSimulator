@@ -1,12 +1,20 @@
 package com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation;
 
 import com.github.goto1134.zombieapocalypsesimulator.ZombieApocalypseConstants;
+import jade.core.Agent;
+import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static com.github.goto1134.zombieapocalypsesimulator.ZombieApocalypseConstants.WALKER;
+import static com.github.goto1134.zombieapocalypsesimulator.ZombieApocalypseConstants.ZOMBIE;
+import static com.github.goto1134.zombieapocalypsesimulator.jade.walkers.Walker.getServiceDescription;
 
 /**
  * Created by Andrew
@@ -17,18 +25,30 @@ class BecomeZombieBehaviour extends OneShotBehaviour {
 
     @Override
     public void action() {
-        ACLMessage message = (ACLMessage) getDataStore().get(SimulationStates.LISTEN);
-        getDataStore().put(ZombieApocalypseConstants.WALKER_TYPE, ZombieApocalypseConstants.ZOMBIE);
+        cat.info("action - 27");
+        DataStore dataStore = getDataStore();
+
+        ACLMessage message = (ACLMessage) dataStore.get(SimulationStates.LISTEN);
+        Agent agent = getAgent();
+
+        String agentName = agent.getName();
+        ServiceDescription humanDescription = getServiceDescription(WALKER, agentName);
+        ServiceDescription zombieService = getServiceDescription(ZOMBIE, agentName);
+        DFAgentDescription agentDescription = new DFAgentDescription();
+        agentDescription.addServices(humanDescription);
+        agentDescription.addServices(zombieService);
+        agentDescription.setName(agent.getAID());
         try {
-            DFService.deregister(getAgent());
+            DFService.modify(agent, agentDescription);
         } catch (FIPAException e) {
             cat.error("", e);
         }
-        // TODO: 05.12.2016 Зарегистрировать сервис зомби
-
+        cat.info("Became Zombie");
         ACLMessage reply = message.createReply();
         reply.setPerformative(ACLMessage.INFORM);
-        getDataStore().put(SimulationStates.RESPOND, reply);
+
+        dataStore.put(ZombieApocalypseConstants.WALKER_TYPE, ZombieApocalypseConstants.ZOMBIE);
+        dataStore.put(SimulationStates.RESPOND, reply);
     }
 
     @Override

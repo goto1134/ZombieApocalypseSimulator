@@ -1,7 +1,7 @@
 package com.github.goto1134.zombieapocalypsesimulator.jade.walkers;
 
 import com.github.goto1134.zombieapocalypsesimulator.ZombieApocalypseConstants;
-import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.MapOntology;
+import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.ApocalypseOntology;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.GenerateCoordinates;
 import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation.SimulationBehaviour;
 import jade.content.ContentElement;
@@ -27,7 +27,7 @@ class RequestCoordinateBehaviour extends SimpleAchieveREInitiator {
     private final static ACLMessage message = new ACLMessage(ACLMessage.QUERY_REF);
 
     static {
-        message.setOntology(MapOntology.NAME);
+        message.setOntology(ApocalypseOntology.NAME);
         message.setProtocol(FIPA_QUERY);
     }
 

@@ -9,21 +9,23 @@ import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Andrew
  * on 05.12.2016.
  */
 class MessageListener extends Behaviour {
-
+    private static final Logger cat = LoggerFactory.getLogger(MessageListener.class);
     private boolean received = false;
-    private SimulationStates eventID = SimulationStates.WALK;
+    private SimulationStates eventID = SimulationStates.LISTEN;
 
     @Override
     public void action() {
+        cat.info("action - 26");
         ACLMessage request = getAgent().receive();
         if (request != null) {
-            received = true;
             try {
                 parseEvent(request);
             } catch (Codec.CodecException | OntologyException e) {
@@ -42,13 +44,15 @@ class MessageListener extends Behaviour {
         if (request.getPerformative() == ACLMessage.REQUEST) {
             ContentElement contentElement = getAgent().getContentManager().extractContent(request);
             if (contentElement instanceof BecomeZombieAction) {
+                cat.info("Become zombie action received");
                 eventID = SimulationStates.BECOME_ZOMBIE;
+                received = true;
             } else if (contentElement instanceof WalkAction) {
-                eventID = SimulationStates.WALK;
+//                eventID = SimulationStates.WALK;
             } else if (contentElement instanceof FightAction) {
-                eventID = SimulationStates.FIGHT;
+//                eventID = SimulationStates.FIGHT;
             } else if (contentElement instanceof DieAction) {
-                eventID = SimulationStates.DIE;
+//                eventID = SimulationStates.DIE;
             }
         }
 
@@ -57,7 +61,7 @@ class MessageListener extends Behaviour {
 
     @Override
     public boolean done() {
-        return false;
+        return received;
     }
 
     @Override
@@ -68,6 +72,7 @@ class MessageListener extends Behaviour {
     @Override
     public void reset() {
         received = false;
+        eventID = SimulationStates.LISTEN;
         super.reset();
     }
 }
