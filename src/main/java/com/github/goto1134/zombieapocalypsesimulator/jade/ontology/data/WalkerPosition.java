@@ -13,6 +13,9 @@ public class WalkerPosition implements Concept {
     private AID name;
     private Coordinates coordinates;
 
+    public WalkerPosition() {
+    }
+
     public WalkerPosition(AID name, Coordinates coordinates) {
         this.name = name;
         this.coordinates = coordinates;

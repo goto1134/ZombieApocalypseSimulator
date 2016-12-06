@@ -49,6 +49,7 @@ class DieShoutActionPerformer extends SimpleAchieveREResponder {
         }
 
         if (contentElement instanceof DieAction) {
+            cat.info("-------DIE RECEIVED--------");
             if (DataStoreUtils.getWalkerType(dataStore).equals(WalkerType.HUMAN)) {
                 BecomeZombieBehaviour becomeZombieBehaviour = new BecomeZombieBehaviour();
                 becomeZombieBehaviour.setDataStore(dataStore);

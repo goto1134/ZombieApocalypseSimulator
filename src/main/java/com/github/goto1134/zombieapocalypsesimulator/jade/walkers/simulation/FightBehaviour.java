@@ -1,7 +1,7 @@
 package com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation;
 
-import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.Coordinates;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.DieAction;
+import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.WalkerPosition;
 import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.DataStoreUtils;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
@@ -25,7 +25,7 @@ import static com.github.goto1134.zombieapocalypsesimulator.jade.MessageUtils.pr
 class FightBehaviour extends SimpleAchieveREInitiator {
 
     private static final Logger cat = LoggerFactory.getLogger(FightBehaviour.class);
-    public static ACLMessage message = prepareMessage(ACLMessage.REQUEST);
+    private static final ACLMessage message = prepareMessage(ACLMessage.REQUEST);
     private DataStore dataStore;
 
     public FightBehaviour(Agent a, DataStore dataStore) {
@@ -35,13 +35,14 @@ class FightBehaviour extends SimpleAchieveREInitiator {
 
     @Override
     protected ACLMessage prepareRequest(ACLMessage msg) {
-        List<Coordinates> coordinateList = DataStoreUtils.getCoordinateList(dataStore);
+        List<WalkerPosition> coordinateList = DataStoreUtils.getCoordinateList(dataStore);
         if (coordinateList.isEmpty()) {
             setRespondMessage();
             return null;
         } else {
             ACLMessage request = (ACLMessage) msg.clone();
             request.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
+            request.addReceiver(coordinateList.get(0).getName());
             try {
                 getAgent().getContentManager().fillContent(request, new DieAction());
             } catch (Codec.CodecException | OntologyException e) {
@@ -54,6 +55,11 @@ class FightBehaviour extends SimpleAchieveREInitiator {
     @Override
     protected void handleAllResultNotifications(Vector msgs) {
         setRespondMessage();
+    }
+
+    @Override
+    public void reset() {
+        super.reset(message);
     }
 
     private void setRespondMessage() {

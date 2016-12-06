@@ -45,11 +45,14 @@ public class BecomeZombieBehaviour extends OneShotBehaviour {
             cat.error("", e);
         }
         cat.info("Became Zombie");
-        ACLMessage reply = message.createReply();
-        reply.setPerformative(ACLMessage.INFORM);
 
         DataStoreUtils.putWalkerType(dataStore, WalkerType.ZOMBIE);
-        DataStoreUtils.putRespondMessage(dataStore, reply);
+
+        if (message != null) {
+            ACLMessage reply = message.createReply();
+            reply.setPerformative(ACLMessage.INFORM);
+            DataStoreUtils.putRespondMessage(dataStore, reply);
+        }
     }
 
     @Override

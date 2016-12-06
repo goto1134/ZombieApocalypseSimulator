@@ -4,6 +4,7 @@ import com.github.goto1134.zombieapocalypsesimulator.ZombieApocalypseConstants;
 import com.github.goto1134.zombieapocalypsesimulator.jade.DFUtils;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.Coordinates;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.GetCoordinatesInRadius;
+import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.WalkerPosition;
 import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.DataStoreUtils;
 import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.WalkerType;
 import jade.content.lang.Codec;
@@ -31,7 +32,7 @@ import static com.github.goto1134.zombieapocalypsesimulator.jade.MessageUtils.pr
  */
 class GetAllInRadiusBehaviour extends AchieveREInitiator {
     private static final Logger cat = LoggerFactory.getLogger(GetAllInRadiusBehaviour.class);
-    private static ACLMessage message = prepareMessage(ACLMessage.QUERY_REF);
+    private static final ACLMessage message = prepareMessage(ACLMessage.QUERY_REF);
     private final DataStore dataStore;
     private SimulationStates nextState;
 
@@ -61,15 +62,16 @@ class GetAllInRadiusBehaviour extends AchieveREInitiator {
     }
 
     @Override
-    protected void handleAllResponses(Vector responses) {
-        List<Coordinates> coordinates = ((Vector<ACLMessage>) responses).stream()
+    protected void handleAllResultNotifications(Vector resultNotifications) {
+        List<WalkerPosition> coordinates = ((Vector<ACLMessage>) resultNotifications).stream()
                 .filter(aclMessage -> aclMessage.getPerformative() == ACLMessage.INFORM)
                 .map(this::getCoordinates)
                 .collect(Collectors.toList());
+        cat.info("list = " + coordinates);
         DataStoreUtils.putCoordinateList(dataStore, coordinates);
     }
 
-    private Coordinates getCoordinates(ACLMessage message) {
+    private WalkerPosition getCoordinates(ACLMessage message) {
         try {
             GetCoordinatesInRadius getCoordinatesInRadius = (GetCoordinatesInRadius) getAgent().getContentManager().extractContent(message);
             return getCoordinatesInRadius.getResult();

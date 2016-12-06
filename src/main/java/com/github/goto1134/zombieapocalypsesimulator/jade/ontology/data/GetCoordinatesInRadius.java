@@ -12,7 +12,7 @@ public class GetCoordinatesInRadius implements WalkerAction {
 
     private Coordinates center = new Coordinates();
     private int radius = 0;
-    private Coordinates result;
+    private WalkerPosition result;
 
     public GetCoordinatesInRadius() {
     }
@@ -22,11 +22,11 @@ public class GetCoordinatesInRadius implements WalkerAction {
         this.radius = radius;
     }
 
-    public Coordinates getResult() {
+    public WalkerPosition getResult() {
         return result;
     }
 
-    public void setResult(Coordinates result) {
+    public void setResult(WalkerPosition result) {
         this.result = result;
     }
 

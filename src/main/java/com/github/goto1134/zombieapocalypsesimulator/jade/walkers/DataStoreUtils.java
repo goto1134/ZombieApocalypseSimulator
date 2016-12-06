@@ -3,6 +3,7 @@ package com.github.goto1134.zombieapocalypsesimulator.jade.walkers;
 import com.github.goto1134.zombieapocalypsesimulator.ZombieApocalypseConstants;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.Coordinates;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.GenerateCoordinates;
+import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.WalkerPosition;
 import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation.SimulationStates;
 import jade.core.behaviours.DataStore;
 import jade.lang.acl.ACLMessage;
@@ -86,12 +87,12 @@ public class DataStoreUtils {
         return (SimulationStates) dataStore.get(GET_ALL_IN_RADIUS);
     }
 
-    public static void putCoordinateList(DataStore dataStore, List<Coordinates> coordinates) {
+    public static void putCoordinateList(DataStore dataStore, List<WalkerPosition> coordinates) {
         dataStore.put(GET_ALL_IN_RADIUS, coordinates);
     }
 
-    public static List<Coordinates> getCoordinateList(DataStore dataStore) {
-        return (List<Coordinates>) dataStore.get(GET_ALL_IN_RADIUS);
+    public static List<WalkerPosition> getCoordinateList(DataStore dataStore) {
+        return (List<WalkerPosition>) dataStore.get(GET_ALL_IN_RADIUS);
     }
 
 }

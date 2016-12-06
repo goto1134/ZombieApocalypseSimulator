@@ -1,6 +1,7 @@
 package com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation;
 
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.Coordinates;
+import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.WalkerPosition;
 import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.DataStoreUtils;
 import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.WalkerType;
 import jade.core.behaviours.DataStore;
@@ -10,7 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -30,7 +33,10 @@ class WalkBehaviour extends OneShotBehaviour {
             mapSize = DataStoreUtils.getMapSize(dataStore);
         }
 
-        List<Coordinates> coordinateList = DataStoreUtils.getCoordinateList(dataStore);
+        List<Coordinates> coordinateList = DataStoreUtils.getCoordinateList(dataStore)
+                .stream()
+                .map(WalkerPosition::getCoordinates)
+                .collect(Collectors.toList());
         WalkerType walkerType = DataStoreUtils.getWalkerType(dataStore);
         Coordinates coordinates = DataStoreUtils.getCoordinates(dataStore);
         Coordinates newCoordinates;
@@ -46,7 +52,7 @@ class WalkBehaviour extends OneShotBehaviour {
         ACLMessage reply = receivedMessage.createReply();
         reply.setPerformative(ACLMessage.INFORM);
         DataStoreUtils.putRespondMessage(dataStore, reply);
-        cat.info("walked");
+        cat.info("walked to " + newCoordinates);
     }
 
     private Coordinates getMostSafePlace(List<Coordinates> enemyCoordinates, Coordinates myCoordinates) {
@@ -59,6 +65,11 @@ class WalkBehaviour extends OneShotBehaviour {
     }
 
     private Coordinates getNearestHuman(List<Coordinates> coordinateList, Coordinates coordinates) {
+        Optional<Coordinates> min = coordinateList.stream()
+                .min((o1, o2) -> (o1.distance(coordinates) - o2.distance(coordinates)));
+        if (min.isPresent()) {
+            return min.get();
+        }
         return getRandomCoordinates(coordinates);
 
         // TODO: 06.12.2016 Сгенерировать новые координаты

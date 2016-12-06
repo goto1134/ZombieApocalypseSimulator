@@ -2,6 +2,7 @@ package com.github.goto1134.zombieapocalypsesimulator.jade.walkers;
 
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.Coordinates;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.GetCoordinatesInRadius;
+import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.WalkerPosition;
 import jade.content.ContentManager;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
@@ -47,12 +48,13 @@ class RespondCoordinateBehaviour extends SimpleAchieveREResponder {
         }
 
         Coordinates coordinates = DataStoreUtils.getCoordinates(dataStore);
+        WalkerPosition walkerPosition = new WalkerPosition(agent.getAID(), coordinates);
 
         if (coordinates.distance(getCoordinatesInRadius.getCenter()) > getCoordinatesInRadius.getRadius()) {
             cat.info("refused");
             throw new RefuseException(request);
         }
-        getCoordinatesInRadius.setResult(coordinates);
+        getCoordinatesInRadius.setResult(walkerPosition);
 
         ACLMessage reply = request.createReply();
         reply.setPerformative(ACLMessage.INFORM);
