@@ -1,18 +1,65 @@
 package com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation;
 
+import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.Coordinates;
+import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.DieAction;
+import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.DataStoreUtils;
+import jade.content.lang.Codec;
+import jade.content.onto.OntologyException;
 import jade.core.Agent;
 import jade.core.behaviours.DataStore;
+import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
-import jade.proto.AchieveREInitiator;
+import jade.proto.SimpleAchieveREInitiator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Vector;
+
+import static com.github.goto1134.zombieapocalypsesimulator.jade.MessageUtils.prepareMessage;
 
 /**
  * Created by Andrew
  * on 06.12.2016.
  */
-class FightBehaviour  extends AchieveREInitiator{
+class FightBehaviour extends SimpleAchieveREInitiator {
 
-    public static ACLMessage message = new ACLMessage(ACLMessage.QUERY_REF);
-    public FightBehaviour(Agent a, ACLMessage msg, DataStore store) {
-        super(a, msg);
+    private static final Logger cat = LoggerFactory.getLogger(FightBehaviour.class);
+    public static ACLMessage message = prepareMessage(ACLMessage.REQUEST);
+    private DataStore dataStore;
+
+    public FightBehaviour(Agent a, DataStore dataStore) {
+        super(a, message);
+        this.dataStore = dataStore;
+    }
+
+    @Override
+    protected ACLMessage prepareRequest(ACLMessage msg) {
+        List<Coordinates> coordinateList = DataStoreUtils.getCoordinateList(dataStore);
+        if (coordinateList.isEmpty()) {
+            setRespondMessage();
+            return null;
+        } else {
+            ACLMessage request = (ACLMessage) msg.clone();
+            request.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
+            try {
+                getAgent().getContentManager().fillContent(request, new DieAction());
+            } catch (Codec.CodecException | OntologyException e) {
+                cat.error("", e);
+            }
+            return request;
+        }
+    }
+
+    @Override
+    protected void handleAllResultNotifications(Vector msgs) {
+        setRespondMessage();
+    }
+
+    private void setRespondMessage() {
+        ACLMessage receivedMessage = DataStoreUtils.getReceivedMessage(dataStore);
+        ACLMessage reply = receivedMessage.createReply();
+        reply.setPerformative(ACLMessage.INFORM);
+        DataStoreUtils.putRespondMessage(dataStore, reply);
     }
 }

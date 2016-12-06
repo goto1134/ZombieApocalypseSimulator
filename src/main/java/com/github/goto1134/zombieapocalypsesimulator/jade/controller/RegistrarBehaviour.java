@@ -10,8 +10,6 @@ import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.core.Agent;
 import jade.core.behaviours.DataStore;
-import jade.core.behaviours.SequentialBehaviour;
-import jade.core.behaviours.WakerBehaviour;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
@@ -88,16 +86,8 @@ class RegistrarBehaviour extends AchieveREResponder {
             DataStore ds = new DataStore();
             ds.put(ApocalypseController.SIMULATION_PROPERTIES_KEY, simulationProperties);
 
-            SequentialBehaviour behaviour = new SequentialBehaviour(agent);
-            behaviour.addSubBehaviour(new WakerBehaviour(agent, 5000) {
-                @Override
-                protected void onWake() {
-                }
-            });
-
             SimulationStarter simulationStarter = new SimulationStarter(getAgent(), ds);
-            behaviour.addSubBehaviour(simulationStarter);
-            agent.addBehaviour(behaviour);
+            agent.addBehaviour(simulationStarter);
         }
         return reply;
     }

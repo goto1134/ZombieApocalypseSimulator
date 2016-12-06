@@ -17,6 +17,9 @@ class RespondBehaviour extends OneShotBehaviour {
     public void action() {
         cat.info("action - 13");
         ACLMessage message = DataStoreUtils.getRespondMessage(getDataStore());
+        if (message == null) {
+            throw new NullPointerException();
+        }
         getAgent().send(message);
     }
 

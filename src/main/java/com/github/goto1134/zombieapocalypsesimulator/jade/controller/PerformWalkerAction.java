@@ -45,6 +45,7 @@ class PerformWalkerAction extends AchieveREInitiator {
 
     @Override
     protected Vector prepareRequests(ACLMessage request) {
+        cat.info("===============================REQUEST " + action.getClass().getSimpleName() + "======================");
         try {
             return getAllAgentsByType(getAgent(), agentDescription)
                     .map(this::getRequestMessage)
@@ -62,7 +63,7 @@ class PerformWalkerAction extends AchieveREInitiator {
 
     @Override
     protected void handleAllResultNotifications(Vector resultNotifications) {
-        cat.info("Result " + resultNotifications);
+        cat.info("Result  number = " + resultNotifications.size());
     }
 
     private ACLMessage getRequestMessage(AID s) {

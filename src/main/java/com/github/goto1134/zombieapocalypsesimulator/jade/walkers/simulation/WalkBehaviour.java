@@ -55,7 +55,7 @@ class WalkBehaviour extends OneShotBehaviour {
                 myCoordinates.getY() + random.nextInt(5) - 2);
 
         // TODO: 06.12.2016 Сгенерировать новые координаты
-        return getRandomCoordinates(coordinates);
+        return getRandomCoordinates(myCoordinates);
     }
 
     private Coordinates getNearestHuman(List<Coordinates> coordinateList, Coordinates coordinates) {
@@ -69,7 +69,8 @@ class WalkBehaviour extends OneShotBehaviour {
         do {
             newCoordinates = myCoordinates.randomInRadius(2);
         }
-        while (newCoordinates.getX() > mapSize || newCoordinates.getY() > 0);
+        while (newCoordinates.getX() > mapSize || newCoordinates.getY() > mapSize);
+        cat.info("coords generated");
         return newCoordinates;
     }
 }

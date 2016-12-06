@@ -2,6 +2,7 @@ package com.github.goto1134.zombieapocalypsesimulator.jade.walkers;
 
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.Coordinates;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.GetCoordinatesInRadius;
+import jade.content.ContentManager;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.core.Agent;
@@ -35,8 +36,11 @@ class RespondCoordinateBehaviour extends SimpleAchieveREResponder {
     protected ACLMessage prepareResponse(ACLMessage request)
             throws NotUnderstoodException, RefuseException {
         GetCoordinatesInRadius getCoordinatesInRadius;
+        Agent agent = getAgent();
+        ContentManager contentManager = agent.getContentManager();
+
         try {
-            getCoordinatesInRadius = (GetCoordinatesInRadius) getAgent().getContentManager().extractContent(request);
+            getCoordinatesInRadius = (GetCoordinatesInRadius) contentManager.extractContent(request);
         } catch (Codec.CodecException | OntologyException e) {
             cat.info("not understood");
             throw new NotUnderstoodException(request);
@@ -53,12 +57,12 @@ class RespondCoordinateBehaviour extends SimpleAchieveREResponder {
         ACLMessage reply = request.createReply();
         reply.setPerformative(ACLMessage.INFORM);
         try {
-            getAgent().getContentManager().fillContent(reply, getCoordinatesInRadius);
+            contentManager.fillContent(reply, getCoordinatesInRadius);
         } catch (Codec.CodecException | OntologyException e) {
             cat.info("refused");
             throw new RefuseException(request);
         }
-        cat.info("data sent");
+        cat.info(agent.getName() + " Inform  coordinates ");
         return reply;
     }
 

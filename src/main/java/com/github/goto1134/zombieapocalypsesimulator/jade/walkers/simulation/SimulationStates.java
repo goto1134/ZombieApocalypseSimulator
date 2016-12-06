@@ -8,9 +8,7 @@ public enum SimulationStates {
     LISTEN,
     RESPOND,
     GET_ALL_IN_RADIUS,
-//    PREPARE_COORDINATES,
     BECOME_ZOMBIE,
     WALK,
-//    FIGHT,
-//    DIE,
+    FIGHT
 }

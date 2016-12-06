@@ -14,11 +14,9 @@ import jade.core.behaviours.SequentialBehaviour;
 class SimulationStep
         extends SequentialBehaviour {
 
-    private final SimulationChecker simulationChecker;
 
-    SimulationStep(Agent a, SimulationChecker simulationChecker) {
+    SimulationStep(Agent a) {
         super(a);
-        this.simulationChecker = simulationChecker;
         init();
     }
 
@@ -30,7 +28,7 @@ class SimulationStep
         addSubBehaviour(new OneShotBehaviour() {
             @Override
             public void action() {
-                simulationChecker.reset();
+                getAgent().addBehaviour(new SimulationChecker(getDataStore()));
             }
         });
     }

@@ -56,19 +56,23 @@ class RequestCoordinateBehaviour extends SimpleAchieveREInitiator {
     protected void handleInform(ACLMessage msg) {
 
         try {
-            ContentElement contentElement = getAgent().getContentManager().extractContent(msg);
+            Agent agent = getAgent();
+            ContentElement contentElement = agent.getContentManager().extractContent(msg);
             GenerateCoordinates generateCoordinates = (GenerateCoordinates) contentElement;
-            cat.info("Inform " + generateCoordinates);
+            cat.info(agent.getName() + " Inform  coordinates ");
 
             DataStore dataStore = new DataStore();
             DataStoreUtils.putGeneratedCoordinates(dataStore, generateCoordinates);
             DataStoreUtils.putWalkerType(dataStore, WalkerType.HUMAN);
             DataStoreUtils.putHumanState(dataStore, HumanState.CALM);
 
-            SimulationBehaviour simulationBehaviour = new SimulationBehaviour(getAgent(), dataStore);
-            RespondCoordinateBehaviour respondCoordinateBehaviour = new RespondCoordinateBehaviour(getAgent(), dataStore);
-            getAgent().addBehaviour(respondCoordinateBehaviour);
-            getAgent().addBehaviour(simulationBehaviour);
+            SimulationBehaviour simulationBehaviour = new SimulationBehaviour(agent, dataStore);
+            RespondCoordinateBehaviour respondCoordinateBehaviour = new RespondCoordinateBehaviour(agent, dataStore);
+            DieShoutActionPerformer dieShoutActionPerformer = new DieShoutActionPerformer(agent, dataStore);
+
+            agent.addBehaviour(respondCoordinateBehaviour);
+            agent.addBehaviour(dieShoutActionPerformer);
+            agent.addBehaviour(simulationBehaviour);
         } catch (Codec.CodecException | OntologyException e) {
             cat.error("", e);
         }

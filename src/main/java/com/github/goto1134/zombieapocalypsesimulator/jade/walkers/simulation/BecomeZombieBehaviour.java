@@ -21,7 +21,7 @@ import static com.github.goto1134.zombieapocalypsesimulator.jade.walkers.Walker.
  * Created by Andrew
  * on 05.12.2016.
  */
-class BecomeZombieBehaviour extends OneShotBehaviour {
+public class BecomeZombieBehaviour extends OneShotBehaviour {
     private static final Logger cat = LoggerFactory.getLogger(BecomeZombieBehaviour.class);
 
     @Override

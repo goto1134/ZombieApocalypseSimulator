@@ -41,23 +41,23 @@ public class SimulationBehaviour extends FSMBehaviour {
         walkBehaviour.setDataStore(dataStore);
         registerState(walkBehaviour, WALK);
 
+        //Искать всех в нужном радиусе
         Behaviour allInRadiusBehaviour = new GetAllInRadiusBehaviour(getAgent(), dataStore);
         registerState(allInRadiusBehaviour, GET_ALL_IN_RADIUS);
 
+        //Драться
+        Behaviour fightBehaviour = new FightBehaviour(agent, dataStore);
+        registerState(fightBehaviour, FIGHT);
 
         registerTransition(LISTEN, BECOME_ZOMBIE);
         registerTransition(LISTEN, RESPOND);
         registerTransition(LISTEN, GET_ALL_IN_RADIUS);
         registerTransition(GET_ALL_IN_RADIUS, WALK);
-//        registerTransition(GET_ALL_IN_RADIUS, FIGHT);
-//        registerTransition(GET_ALL_IN_RADIUS, DIE);
+        registerTransition(GET_ALL_IN_RADIUS, FIGHT);
         registerDefaultTransition(BECOME_ZOMBIE, RESPOND);
         registerDefaultTransition(WALK, RESPOND);
-//        registerDefaultTransition(SimulationStates.FIGHT, SimulationStates.RESPOND);
-//        registerTransition(SimulationStates.DIE, SimulationStates.RESPOND);
-//        registerTransition(SimulationStates.DIE, SimulationStates.BECOME_ZOMBIE);
-//        registerDefaultTransition(SimulationStates.PREPARE_COORDINATES, SimulationStates.RESPOND);
-        registerTransition(RESPOND, LISTEN, LISTEN/* SimulationStates.values()*/);
+        registerDefaultTransition(FIGHT, RESPOND);
+        registerTransition(RESPOND, LISTEN, SimulationStates.values());
     }
 
     private void registerState(Behaviour b, SimulationStates state) {

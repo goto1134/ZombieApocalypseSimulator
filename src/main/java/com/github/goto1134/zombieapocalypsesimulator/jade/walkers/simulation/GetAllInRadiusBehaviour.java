@@ -53,7 +53,6 @@ class GetAllInRadiusBehaviour extends AchieveREInitiator {
             Vector<ACLMessage> aclMessages = DFUtils.getAllAgentsByType(getAgent(), description)
                     .map(this::getRequest)
                     .collect(Collectors.toCollection(Vector::new));
-            cat.info(String.valueOf(aclMessages));
             return aclMessages;
         } catch (FIPAException e) {
             cat.error("", e);
@@ -85,8 +84,7 @@ class GetAllInRadiusBehaviour extends AchieveREInitiator {
         clone.addReceiver(receiver);
         clone.setProtocol(FIPANames.InteractionProtocol.FIPA_QUERY);
 
-        // TODO: 06.12.2016 Проверить, в случае, если это атака, сменить радиус на 0
-        int radius = 2;
+        int radius = nextState.equals(SimulationStates.FIGHT) ? 0 : 2;
 
         Coordinates center = DataStoreUtils.getCoordinates(dataStore);
         try {

@@ -16,14 +16,11 @@ import org.slf4j.LoggerFactory;
  */
 class SimulationChecker extends OneShotBehaviour {
     private static final Logger cat = LoggerFactory.getLogger(SimulationChecker.class);
-    private boolean wasSimulationAdded = false;
     private SimulationStep simulationStep;
 
 
     SimulationChecker(DataStore dataStore) {
         setDataStore(dataStore);
-        simulationStep = new SimulationStep(getAgent(), this);
-        simulationStep.setDataStore(getDataStore());
     }
 
     @Override
@@ -38,12 +35,9 @@ class SimulationChecker extends OneShotBehaviour {
             } else if (humansCount == 0) {
                 cat.info("Zombie won");
             } else {
-                if (wasSimulationAdded) {
-                    simulationStep.reset();
-                } else {
-                    getAgent().addBehaviour(simulationStep);
-                    wasSimulationAdded = true;
-                }
+                SimulationStep simulationStep = new SimulationStep(getAgent());
+                simulationStep.setDataStore(getDataStore());
+                getAgent().addBehaviour(simulationStep);
             }
 
         } catch (FIPAException e) {
