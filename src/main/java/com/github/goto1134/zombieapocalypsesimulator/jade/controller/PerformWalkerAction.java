@@ -7,7 +7,6 @@ import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
@@ -16,9 +15,10 @@ import jade.proto.AchieveREInitiator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
 import java.util.Vector;
 import java.util.stream.Collectors;
+
+import static com.github.goto1134.zombieapocalypsesimulator.jade.DFUtils.getAllAgentsByType;
 
 /**
  * Created by Andrew
@@ -46,9 +46,7 @@ class PerformWalkerAction extends AchieveREInitiator {
     @Override
     protected Vector prepareRequests(ACLMessage request) {
         try {
-            return Arrays.stream(DFService.search(getAgent(), agentDescription))
-                    .map(DFAgentDescription::getName)
-                    .peek(aid -> cat.info("found walker : " + aid.getName()))
+            return getAllAgentsByType(getAgent(), agentDescription)
                     .map(this::getRequestMessage)
                     .collect(Collectors.toCollection(Vector::new));
         } catch (FIPAException e) {

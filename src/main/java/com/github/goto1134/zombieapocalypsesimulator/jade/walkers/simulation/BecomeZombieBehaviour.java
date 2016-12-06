@@ -1,6 +1,6 @@
 package com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation;
 
-import com.github.goto1134.zombieapocalypsesimulator.ZombieApocalypseConstants;
+import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.DataStoreUtils;
 import jade.core.Agent;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
@@ -28,7 +28,7 @@ class BecomeZombieBehaviour extends OneShotBehaviour {
         cat.info("action - 27");
         DataStore dataStore = getDataStore();
 
-        ACLMessage message = (ACLMessage) dataStore.get(SimulationStates.LISTEN);
+        ACLMessage message = DataStoreUtils.getReceivedMessage(dataStore);
         Agent agent = getAgent();
 
         String agentName = agent.getName();
@@ -47,8 +47,8 @@ class BecomeZombieBehaviour extends OneShotBehaviour {
         ACLMessage reply = message.createReply();
         reply.setPerformative(ACLMessage.INFORM);
 
-        dataStore.put(ZombieApocalypseConstants.WALKER_TYPE, ZombieApocalypseConstants.ZOMBIE);
-        dataStore.put(SimulationStates.RESPOND, reply);
+        DataStoreUtils.putWalkerType(dataStore, WalkerType.ZOMBIE);
+        DataStoreUtils.putRespondMessage(dataStore, reply);
     }
 
     @Override

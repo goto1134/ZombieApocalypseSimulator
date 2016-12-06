@@ -4,13 +4,17 @@ import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.BecomeZo
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.DieAction;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.FightAction;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.WalkAction;
+import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.DataStoreUtils;
 import jade.content.ContentElement;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.DataStore;
 import jade.lang.acl.ACLMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation.SimulationStates.WALK;
 
 /**
  * Created by Andrew
@@ -31,7 +35,7 @@ class MessageListener extends Behaviour {
             } catch (Codec.CodecException | OntologyException e) {
                 ACLMessage reply = request.createReply();
                 reply.setPerformative(ACLMessage.NOT_UNDERSTOOD);
-                getDataStore().put(SimulationStates.RESPOND, reply);
+                DataStoreUtils.putRespondMessage(getDataStore(), reply);
                 eventID = SimulationStates.RESPOND;
             }
         } else {
@@ -41,6 +45,7 @@ class MessageListener extends Behaviour {
 
     private void parseEvent(ACLMessage request) throws Codec.CodecException, OntologyException {
         //Запросы что-то сделать
+        DataStore dataStore = getDataStore();
         if (request.getPerformative() == ACLMessage.REQUEST) {
             ContentElement contentElement = getAgent().getContentManager().extractContent(request);
             if (contentElement instanceof BecomeZombieAction) {
@@ -48,15 +53,16 @@ class MessageListener extends Behaviour {
                 eventID = SimulationStates.BECOME_ZOMBIE;
                 received = true;
             } else if (contentElement instanceof WalkAction) {
-//                eventID = SimulationStates.WALK;
+                DataStoreUtils.putGetAllInRadiusType(dataStore, WALK);
+                eventID = SimulationStates.GET_ALL_IN_RADIUS;
+                received = true;
             } else if (contentElement instanceof FightAction) {
 //                eventID = SimulationStates.FIGHT;
             } else if (contentElement instanceof DieAction) {
 //                eventID = SimulationStates.DIE;
             }
         }
-
-        getDataStore().put(SimulationStates.LISTEN, request);
+        DataStoreUtils.putReceivedMessage(dataStore, request);
     }
 
     @Override

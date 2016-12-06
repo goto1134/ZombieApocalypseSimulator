@@ -1,5 +1,6 @@
 package com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation;
 
+import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.DataStoreUtils;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import org.slf4j.Logger;
@@ -15,7 +16,7 @@ class RespondBehaviour extends OneShotBehaviour {
     @Override
     public void action() {
         cat.info("action - 13");
-        ACLMessage message = (ACLMessage) getDataStore().get(SimulationStates.RESPOND);
+        ACLMessage message = DataStoreUtils.getRespondMessage(getDataStore());
         getAgent().send(message);
     }
 

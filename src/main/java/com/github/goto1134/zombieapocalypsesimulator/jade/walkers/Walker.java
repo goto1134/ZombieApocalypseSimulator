@@ -26,6 +26,7 @@ public class Walker extends Agent {
         cat.info("Setup");
         getContentManager().registerOntology(ApocalypseOntology.getInstance());
         getContentManager().registerLanguage(new LEAPCodec());
+
         try {
             String agentName = getName();
             ServiceDescription walkerDescription = getServiceDescription(WALKER, agentName);

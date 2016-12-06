@@ -1,5 +1,6 @@
 package com.github.goto1134.zombieapocalypsesimulator;
 
+import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation.WalkerType;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 
@@ -8,8 +9,8 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
  * on 01.12.2016.
  */
 public class ZombieApocalypseConstants {
-    public static final String ZOMBIE = "ZOMBIE";
-    public static final String HUMAN = "HUMAN";
+    public static final String ZOMBIE = WalkerType.ZOMBIE.toString();
+    public static final String HUMAN = WalkerType.HUMAN.toString();
     public static final String WALKER = "WALKER";
 
 
@@ -19,6 +20,7 @@ public class ZombieApocalypseConstants {
     public static final String COORDINATE = "Coordinate";
     public static final String CONTROLLER_AID = "CONTROLLER_AID";
     public static final String WALKER_TYPE = "type";
+    public static final String HUMAN_STATE = "state";
 
     static {
         ServiceDescription zombieserviceDescription = new ServiceDescription();

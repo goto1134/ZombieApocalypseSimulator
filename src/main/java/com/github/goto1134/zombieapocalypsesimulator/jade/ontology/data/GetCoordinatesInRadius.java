@@ -1,12 +1,14 @@
 package com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data;
 
+import jade.content.onto.annotations.Result;
 import jade.content.onto.annotations.Slot;
 
 /**
  * Created by Andrew
  * on 06.12.2016.
  */
-class GetCoordinatesInRadius implements WalkerAction {
+@Result(type = Coordinates.class)
+public class GetCoordinatesInRadius implements WalkerAction {
 
     private Coordinates center = new Coordinates();
     private int radius = 0;

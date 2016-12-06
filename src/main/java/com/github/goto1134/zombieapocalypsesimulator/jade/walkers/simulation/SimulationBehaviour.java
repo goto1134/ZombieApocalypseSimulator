@@ -19,10 +19,8 @@ public class SimulationBehaviour extends FSMBehaviour {
 
     private static final Logger cat = LoggerFactory.getLogger(SimulationBehaviour.class);
 
-    public SimulationBehaviour(Agent a) {
-        super(a);
-        DataStore dataStore = getDataStore();
 
+    public SimulationBehaviour(Agent agent, DataStore dataStore) {
         //Обработка входящих сообщений
         Behaviour messageListener = new MessageListener();
         messageListener.setDataStore(dataStore);
@@ -31,33 +29,35 @@ public class SimulationBehaviour extends FSMBehaviour {
         //Стать зомби
         Behaviour becomeZombieBehaviour = new BecomeZombieBehaviour();
         becomeZombieBehaviour.setDataStore(dataStore);
-        registerState(becomeZombieBehaviour, SimulationStates.BECOME_ZOMBIE);
+        registerState(becomeZombieBehaviour, BECOME_ZOMBIE);
 
         //Ответ
         Behaviour respondBehaviour = new RespondBehaviour();
         respondBehaviour.setDataStore(dataStore);
-        registerState(respondBehaviour, SimulationStates.RESPOND);
+        registerState(respondBehaviour, RESPOND);
 
-        //
+        //Ходить
         Behaviour walkBehaviour = new WalkBehaviour();
         walkBehaviour.setDataStore(dataStore);
-        registerState(walkBehaviour, SimulationStates.WALK);
+        registerState(walkBehaviour, WALK);
+
+        Behaviour allInRadiusBehaviour = new GetAllInRadiusBehaviour(getAgent(), dataStore);
+        registerState(allInRadiusBehaviour, GET_ALL_IN_RADIUS);
 
 
-        registerTransition(LISTEN, SimulationStates.BECOME_ZOMBIE);
-        registerTransition(LISTEN, SimulationStates.RESPOND);
-//        registerTransition(LISTEN, GET_ALL_IN_RADIUS);
-//        registerTransition(LISTEN, SimulationStates.PREPARE_COORDINATES);
-//        registerTransition(GET_ALL_IN_RADIUS, WALK);
+        registerTransition(LISTEN, BECOME_ZOMBIE);
+        registerTransition(LISTEN, RESPOND);
+        registerTransition(LISTEN, GET_ALL_IN_RADIUS);
+        registerTransition(GET_ALL_IN_RADIUS, WALK);
 //        registerTransition(GET_ALL_IN_RADIUS, FIGHT);
 //        registerTransition(GET_ALL_IN_RADIUS, DIE);
-        registerDefaultTransition(SimulationStates.BECOME_ZOMBIE, SimulationStates.RESPOND);
-        registerDefaultTransition(SimulationStates.WALK, SimulationStates.RESPOND);
+        registerDefaultTransition(BECOME_ZOMBIE, RESPOND);
+        registerDefaultTransition(WALK, RESPOND);
 //        registerDefaultTransition(SimulationStates.FIGHT, SimulationStates.RESPOND);
 //        registerTransition(SimulationStates.DIE, SimulationStates.RESPOND);
 //        registerTransition(SimulationStates.DIE, SimulationStates.BECOME_ZOMBIE);
 //        registerDefaultTransition(SimulationStates.PREPARE_COORDINATES, SimulationStates.RESPOND);
-        registerTransition(SimulationStates.RESPOND, LISTEN, LISTEN/* SimulationStates.values()*/);
+        registerTransition(RESPOND, LISTEN, LISTEN/* SimulationStates.values()*/);
     }
 
     private void registerState(Behaviour b, SimulationStates state) {
@@ -83,7 +83,7 @@ public class SimulationBehaviour extends FSMBehaviour {
     public void reset() {
         DataStore dataStore = getDataStore();
         dataStore.remove(LISTEN);
-        dataStore.remove(SimulationStates.RESPOND);
+        dataStore.remove(RESPOND);
         super.reset();
     }
 

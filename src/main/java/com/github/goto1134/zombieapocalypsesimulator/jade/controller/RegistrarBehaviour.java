@@ -10,6 +10,8 @@ import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.core.Agent;
 import jade.core.behaviours.DataStore;
+import jade.core.behaviours.SequentialBehaviour;
+import jade.core.behaviours.WakerBehaviour;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
@@ -47,7 +49,8 @@ class RegistrarBehaviour extends AchieveREResponder {
     @Override
     protected ACLMessage handleRequest(ACLMessage request) throws NotUnderstoodException, RefuseException {
         if (responseNumbers >= simulationProperties.walkersNumber) {
-            throw new RefuseException("All walkers are registered");
+            getAgent().removeBehaviour(this);
+            throw new RefuseException("out of limit");
         }
 
         Agent agent = getAgent();
@@ -81,11 +84,20 @@ class RegistrarBehaviour extends AchieveREResponder {
         responseNumbers++;
 
         if (responseNumbers == simulationProperties.walkersNumber) {
-            agent.removeBehaviour(this);
+//            agent.removeBehaviour(this);
             DataStore ds = new DataStore();
             ds.put(ApocalypseController.SIMULATION_PROPERTIES_KEY, simulationProperties);
+
+            SequentialBehaviour behaviour = new SequentialBehaviour(agent);
+            behaviour.addSubBehaviour(new WakerBehaviour(agent, 5000) {
+                @Override
+                protected void onWake() {
+                }
+            });
+
             SimulationStarter simulationStarter = new SimulationStarter(getAgent(), ds);
-            agent.addBehaviour(simulationStarter);
+            behaviour.addSubBehaviour(simulationStarter);
+            agent.addBehaviour(behaviour);
         }
         return reply;
     }
