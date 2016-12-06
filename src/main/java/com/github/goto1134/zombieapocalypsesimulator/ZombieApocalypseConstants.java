@@ -10,6 +10,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 public class ZombieApocalypseConstants {
     public static final String ZOMBIE = "ZOMBIE";
     public static final String HUMAN = "HUMAN";
+    public static final String WALKER = "WALKER";
 
 
     public static final DFAgentDescription ZOMBIE_AGENT_DESCRIPTION = new DFAgentDescription();

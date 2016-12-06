@@ -4,9 +4,14 @@ import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.MapOntology;
 import jade.content.lang.leap.LEAPCodec;
 import jade.core.Agent;
 import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static com.github.goto1134.zombieapocalypsesimulator.ZombieApocalypseConstants.WALKER;
+import static com.github.goto1134.zombieapocalypsesimulator.ZombieApocalypseConstants.ZOMBIE;
 
 /**
  * Created by Andrew
@@ -21,20 +26,17 @@ public class Walker extends Agent {
         cat.info("Setup");
         getContentManager().registerOntology(MapOntology.getInstance());
         getContentManager().registerLanguage(new LEAPCodec());
-
-//
-//        try {
-//            ServiceDescription description = new ServiceDescription();
-//            description.setType(ZOMBIE.equals(type) ? ZOMBIE : HUMAN);
-//            description.setName(String.valueOf(new Random(System.currentTimeMillis()).nextInt()));
-//            DFAgentDescription agentDescription = new DFAgentDescription();
-//            agentDescription.addServices(description);
-//            agentDescription.setName(getAID());
-//
-//            DFService.register(this, agentDescription);
-//        } catch (FIPAException e) {
-//            cat.error("", e);
-//        }
+        try {
+            ServiceDescription description = new ServiceDescription();
+            description.setType(WALKER);
+            description.setName(getName() + "walker");
+            DFAgentDescription agentDescription = new DFAgentDescription();
+            agentDescription.addServices(description);
+            agentDescription.setName(getAID());
+            DFService.register(this, agentDescription);
+        } catch (FIPAException e) {
+            cat.error("", e);
+        }
 
         addBehaviour(new SearchController());
         cat.info("Laded");

@@ -31,7 +31,7 @@ class SimulationStarter extends SimpleAchieveREInitiator {
         try {
             DFAgentDescription agentDescription = new DFAgentDescription();
             ServiceDescription serviceDescription = new ServiceDescription();
-            serviceDescription.setType(ZombieApocalypseConstants.HUMAN);
+            serviceDescription.setType(ZombieApocalypseConstants.WALKER);
             agentDescription.addServices(serviceDescription);
 
             DFAgentDescription[] search = DFService.search(getAgent(), agentDescription);
@@ -39,7 +39,7 @@ class SimulationStarter extends SimpleAchieveREInitiator {
 
             ACLMessage clone = (ACLMessage) msg.clone();
             clone.addReceiver(name);
-
+            return clone;
         } catch (FIPAException e) {
             cat.error("", e);
         }
