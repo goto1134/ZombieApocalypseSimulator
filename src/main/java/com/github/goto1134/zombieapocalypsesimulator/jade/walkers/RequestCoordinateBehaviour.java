@@ -3,6 +3,7 @@ package com.github.goto1134.zombieapocalypsesimulator.jade.walkers;
 import com.github.goto1134.zombieapocalypsesimulator.ZombieApocalypseConstants;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.MapOntology;
 import com.github.goto1134.zombieapocalypsesimulator.jade.ontology.data.GenerateCoordinates;
+import com.github.goto1134.zombieapocalypsesimulator.jade.walkers.simulation.SimulationBehaviour;
 import jade.content.ContentElement;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
@@ -58,11 +59,15 @@ class RequestCoordinateBehaviour extends SimpleAchieveREInitiator {
             ContentElement contentElement = getAgent().getContentManager().extractContent(msg);
             GenerateCoordinates generateCoordinates = (GenerateCoordinates) contentElement;
             cat.info("Inform " + generateCoordinates);
-            DataStore dataStore = getDataStore();
+
+            DataStore dataStore = new DataStore();
             dataStore.put(ZombieApocalypseConstants.COORDINATE, generateCoordinates.getCoordinates());
             dataStore.put(ZombieApocalypseConstants.MAP_SIZE, generateCoordinates.getMapSize());
-            dataStore.put("type", ZombieApocalypseConstants.HUMAN);
-            // TODO: 04.12.2016 Добавить стандартное поведение
+            dataStore.put(ZombieApocalypseConstants.WALKER_TYPE, ZombieApocalypseConstants.HUMAN);
+
+            SimulationBehaviour simulationBehaviour = new SimulationBehaviour(getAgent());
+            simulationBehaviour.setDataStore(dataStore);
+            getAgent().addBehaviour(simulationBehaviour);
         } catch (Codec.CodecException | OntologyException e) {
             cat.error("", e);
         }
