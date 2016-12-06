@@ -31,9 +31,9 @@ class SimulationChecker extends OneShotBehaviour {
             int humansCount = DFService.search(agent, ZombieApocalypseConstants.HUMAN_AGENT_DESCRIPTION).length;
 
             if (zombieCount == 0) {
-                cat.info("Humanity survived");
+                cat.info("!!!!!!!!!!!!!!!!!!!!Humanity survived!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             } else if (humansCount == 0) {
-                cat.info("Zombie won");
+                cat.info("!!!!!!!!!!!!!!!!!!!!!!!Zombies won!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             } else {
                 SimulationStep simulationStep = new SimulationStep(getAgent());
                 simulationStep.setDataStore(getDataStore());
